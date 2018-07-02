@@ -1,8 +1,8 @@
 object  MyProver {
   def main(args: Array[String]): Unit = {
 
-    println(args(0))
-    println(args(1))
+    //println(args(0))
+    //println(args(1))
 
     if (formula_solver(args(0), args(1))) {
       println("provable")
@@ -23,6 +23,13 @@ object  MyProver {
             return true
         false
       }
+      else if (right_formula.contains("|")){
+        var right_token = right_formula.split('|')
+        for (i <- right_token.indices)
+          if (formula_solver(left_formula, right_token(i)))
+            return true
+        false
+      }
       else if (left_formula.contains("&")) {
         var ltoken = left_formula.split('&')
         var new_formula: String = ltoken(0)
@@ -34,14 +41,7 @@ object  MyProver {
         else
           false
       }
-      else if (right_formula.contains("|")){
-        var right_token = right_formula.split('|')
-        var new_formula_first: String = right_token(0)
-        for (i <- right_token.indices)
-          if (formula_solver(left_formula, right_token(i)))
-            return true
-        false
-      }
+
       else if (right_formula.contains("&")) {
         var rtoken = right_formula.split('&')
         var new_formula: String = rtoken(0)
@@ -53,10 +53,8 @@ object  MyProver {
         else
           false
       }
-      else {
-        println(left_formula, right_formula)
+      else
         axiom_solver(left_formula, right_formula)
-      }
     }
 
     def axiom_solver(left_formula: String, right_formula: String): Boolean = {
