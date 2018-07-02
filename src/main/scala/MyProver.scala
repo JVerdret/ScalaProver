@@ -31,12 +31,16 @@ object  MyProver {
         false
       }
       else if (left_formula.contains("&")) {
+        if (right_formula.contains(left_formula))
+          return axiom_solver(left_formula, right_formula)
         var ltoken = left_formula.split('&')
         var new_formula: String = ltoken(0)
         formula_solver(new_formula, right_formula)
       }
 
       else if (right_formula.contains("&")) {
+        if (left_formula.contains(right_formula))
+          return axiom_solver(left_formula, right_formula)
         var rtoken = right_formula.split('&')
         var new_formula: String = rtoken(0)
         formula_solver(left_formula, new_formula)
