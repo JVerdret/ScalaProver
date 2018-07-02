@@ -34,16 +34,24 @@ object  MyProver {
         if (right_formula.contains(left_formula))
           return axiom_solver(left_formula, right_formula)
         var ltoken = left_formula.split('&')
-        var new_formula: String = ltoken(0)
-        formula_solver(new_formula, right_formula)
+        //var new_formula: String = ltoken(0)
+        //formula_solver(new_formula, right_formula)
+        for (i <- ltoken.indices)
+          if(formula_solver(ltoken(i), right_formula))
+            return true
+        false
       }
 
       else if (right_formula.contains("&")) {
         if (left_formula.contains(right_formula))
           return axiom_solver(left_formula, right_formula)
         var rtoken = right_formula.split('&')
-        var new_formula: String = rtoken(0)
-        formula_solver(left_formula, new_formula)
+        //var new_formula: String = rtoken(0)
+        //formula_solver(left_formula, new_formula)
+        for (i <- rtoken.indices)
+          if(formula_solver(left_formula, rtoken(i)))
+            return true
+        false
       }
       else
         axiom_solver(left_formula, right_formula)
