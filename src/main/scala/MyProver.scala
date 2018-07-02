@@ -1,8 +1,8 @@
 object  MyProver {
   def main(args: Array[String]): Unit = {
 
-    //println(args(0))
-    //println(args(1))
+    println(args(0))
+    println(args(1))
 
     if (formula_solver(args(0), args(1))) {
       println("provable")
@@ -33,25 +33,13 @@ object  MyProver {
       else if (left_formula.contains("&")) {
         var ltoken = left_formula.split('&')
         var new_formula: String = ltoken(0)
-        val cond1 = formula_solver(new_formula, right_formula)
-        new_formula = ltoken(1)
-        val cond2 = formula_solver(new_formula, right_formula)
-        if (cond1 && cond2)
-          true
-        else
-          false
+        formula_solver(new_formula, right_formula)
       }
 
       else if (right_formula.contains("&")) {
         var rtoken = right_formula.split('&')
         var new_formula: String = rtoken(0)
-        val cond1 = formula_solver(left_formula, new_formula)
-        new_formula = rtoken(1)
-        val cond2 = formula_solver(left_formula, new_formula)
-        if (cond1 && cond2)
-          true
-        else
-          false
+        formula_solver(left_formula, new_formula)
       }
       else
         axiom_solver(left_formula, right_formula)
