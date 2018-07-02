@@ -18,14 +18,10 @@ object  MyProver {
     def formula_solver(left_formula: String, right_formula: String): Boolean = {
       if (left_formula.contains("|")){
         var left_token = left_formula.split('|')
-        var new_formula_first: String = left_token(0)
-        val cond1 = formula_solver(new_formula_first, right_formula)
-        new_formula_first = left_token(1)
-        val cond2 = formula_solver(new_formula_first, right_formula)
-        if (cond1 || cond2)
-          true
-        else
-          false
+        for (i <- left_token.indices)
+          if (formula_solver(left_token(i), right_formula))
+            return true
+        false
       }
       else if (left_formula.contains("&")) {
         var ltoken = left_formula.split('&')
@@ -41,13 +37,10 @@ object  MyProver {
       else if (right_formula.contains("|")){
         var right_token = right_formula.split('|')
         var new_formula_first: String = right_token(0)
-        val cond1 = formula_solver(left_formula, new_formula_first)
-        new_formula_first = right_token(1)
-        val cond2 = formula_solver(left_formula, new_formula_first)
-        if (cond1 || cond2)
-          true
-        else
-          false
+        for (i <- right_token.indices)
+          if (formula_solver(left_formula, right_token(i)))
+            return true
+        false
       }
       else if (right_formula.contains("&")) {
         var rtoken = right_formula.split('&')
@@ -60,8 +53,10 @@ object  MyProver {
         else
           false
       }
-      else
+      else {
+        println(left_formula, right_formula)
         axiom_solver(left_formula, right_formula)
+      }
     }
 
     def axiom_solver(left_formula: String, right_formula: String): Boolean = {
