@@ -11,12 +11,17 @@ object  MyProver {
       println("not provable")
     }
 
-    def solver(left_formula: String, right_formula: String): Boolean = {
-      true
-    }
-
     def formula_solver(left_formula: String, right_formula: String): Boolean = {
       if (left_formula.contains("|")){
+        var index = left_formula.indexOf('|')
+        var toktokwhosthere = left_formula.split('|')
+        if (left_formula.charAt(index + 1).equals('(')){
+          var iparenthesis = left_formula.indexOf(')')
+          var string = ""
+          for (i <- index + 1 until iparenthesis)
+            string += left_formula(i)
+          formula_solver(toktokwhosthere(0), string)
+        }
         var left_token = left_formula.split('|')
         for (i <- left_token.indices)
           if (formula_solver(left_token(i), right_formula))
@@ -46,8 +51,6 @@ object  MyProver {
         if (left_formula.contains(right_formula))
           return axiom_solver(left_formula, right_formula)
         var rtoken = right_formula.split('&')
-        //var new_formula: String = rtoken(0)
-        //formula_solver(left_formula, new_formula)
         for (i <- rtoken.indices)
           if(formula_solver(left_formula, rtoken(i)))
             return true
@@ -71,5 +74,6 @@ object  MyProver {
       }
       return false
     }
+
   }
 }
